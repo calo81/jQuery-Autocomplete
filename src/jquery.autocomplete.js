@@ -72,6 +72,7 @@
                 tabDisabled: false,
                 dataType: 'text',
                 currentRequest: null,
+				valueOnBox: this.valueOnBox,
                 lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
                     return suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1;
                 },
@@ -656,9 +657,17 @@
                 $(that.suggestionsContainer).scrollTop(offsetTop - that.options.maxHeight + heightDelta);
             }
 
-            that.el.val(that.getValue(that.suggestions[index].value));
+            that._setValueOnBox(that.suggestions[index]);
             that.signalHint(null);
         },
+		
+	    _setValueOnBox: function (suggestion) {
+	      this.el.val(this.options.valueOnBox(this.getValue(suggestion.value)));
+	    },
+
+	    valueOnBox: function (suggestion) {
+	      return suggestion;
+	    },
 
         onSelect: function (index) {
             var that = this,
@@ -666,7 +675,7 @@
                 suggestion = that.suggestions[index];
 
             that.currentValue = that.getValue(suggestion.value);
-            that.el.val(that.currentValue);
+            that._setValueOnBox(suggestion);
             that.signalHint(null);
             that.suggestions = [];
             that.selection = suggestion;
