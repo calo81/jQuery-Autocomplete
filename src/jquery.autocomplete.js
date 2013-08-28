@@ -72,7 +72,7 @@
                 tabDisabled: false,
                 dataType: 'text',
                 currentRequest: null,
-				valueOnBox: this.valueOnBox,
+		valueOnBox: this.valueOnBox,
                 lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
                     return suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1;
                 },
