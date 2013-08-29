@@ -1,11 +1,11 @@
 /**
-*  Ajax Autocomplete for jQuery, version 1.2.7
-*  (c) 2013 Tomas Kirda
-*
-*  Ajax Autocomplete for jQuery is freely distributable under the terms of an MIT-style license.
-*  For details, see the web site: http://www.devbridge.com/projects/autocomplete/jquery/
-*
-*/
+ *  Ajax Autocomplete for jQuery, version 1.2.7
+ *  (c) 2013 Tomas Kirda
+ *
+ *  Ajax Autocomplete for jQuery is freely distributable under the terms of an MIT-style license.
+ *  For details, see the web site: http://www.devbridge.com/projects/autocomplete/jquery/
+ *
+ */
 
 /*jslint  browser: true, white: true, plusplus: true */
 /*global define, window, document, jQuery */
@@ -72,7 +72,8 @@
                 tabDisabled: false,
                 dataType: 'text',
                 currentRequest: null,
-				valueOnBox: this.valueOnBox,
+                valueOnBox: this.valueOnBox,
+                propagateEnterSelect: false,
                 lookupFilter: function (suggestion, originalQuery, queryLowerCase) {
                     return suggestion.value.toLowerCase().indexOf(queryLowerCase) !== -1;
                 },
@@ -313,7 +314,7 @@
                         that.selectHint();
                         return;
                     }
-                    // Fall through to RETURN
+                // Fall through to RETURN
                 case keys.RETURN:
                     if (that.selectedIndex === -1) {
                         that.hide();
@@ -321,6 +322,9 @@
                     }
                     that.select(that.selectedIndex);
                     if (e.which === keys.TAB && that.options.tabDisabled === false) {
+                        return;
+                    }
+                    if(that.options.propagateEnterSelect){
                         return;
                     }
                     break;
@@ -440,9 +444,9 @@
                     type: options.type,
                     dataType: options.dataType
                 }).done(function (data) {
-                    that.processResponse(data, q);
-                    options.onSearchComplete.call(that.element, q);
-                });
+                        that.processResponse(data, q);
+                        options.onSearchComplete.call(that.element, q);
+                    });
             }
         },
 
@@ -660,14 +664,14 @@
             that._setValueOnBox(that.suggestions[index]);
             that.signalHint(null);
         },
-		
-	    _setValueOnBox: function (suggestion) {
-	      this.el.val(this.options.valueOnBox(this.getValue(suggestion.value)));
-	    },
 
-	    valueOnBox: function (suggestion) {
-	      return suggestion;
-	    },
+        _setValueOnBox: function (suggestion) {
+            this.el.val(this.options.valueOnBox(this.getValue(suggestion.value)));
+        },
+
+        valueOnBox: function (suggestion) {
+            return suggestion;
+        },
 
         onSelect: function (index) {
             var that = this,
